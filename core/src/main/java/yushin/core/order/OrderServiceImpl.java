@@ -8,12 +8,15 @@ import yushin.core.member.MemberRepository;
 import yushin.core.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService {
+    // OrderServicceImpl은 추상화에만 의존하게 되었다. 따라서 완벽히 DIP를 준수하게 된다.
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
-    // 할인 정책을 변경하기 위해 주문 서비스 코드를 변경해야 한다. OCP와 DIP를 위반하고 있다.
-    //private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
-    //private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
-    private DiscountPolicy discountPolicy;
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
+
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
         Member member = memberRepository.findById(memberId);

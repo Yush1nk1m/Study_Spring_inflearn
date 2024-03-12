@@ -1,8 +1,14 @@
 package yushin.core.member;
 
 public class MemberServiceImpl implements MemberService {
-    // 추상화와 구체화 둘 다에 의존하고 있다. 즉, DIP를 위반하고 있는 코드이다.
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    // 생성자를 통해 MemberRepository를 주입한다(생성자 주입).
+    // MemberServiceImpl은 이제 추상화에만 의존하게 되었다.
+    private final MemberRepository memberRepository;
+
+
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     @Override
     public void join(Member member) {
