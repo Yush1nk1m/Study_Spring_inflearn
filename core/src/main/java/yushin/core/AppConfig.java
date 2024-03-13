@@ -12,6 +12,7 @@ import yushin.core.order.OrderService;
 import yushin.core.order.OrderServiceImpl;
 
 // 객체의 생성과 연결을 담당한다.
+// factory method를 이용해 등록하는 방법이다.
 @Configuration
 public class AppConfig {
 
