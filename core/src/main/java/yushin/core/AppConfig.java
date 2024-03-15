@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import yushin.core.discount.DiscountPolicy;
 import yushin.core.discount.FixDiscountPolicy;
 import yushin.core.discount.RateDiscountPolicy;
+import yushin.core.member.MemberRepository;
 import yushin.core.member.MemberService;
 import yushin.core.member.MemberServiceImpl;
 import yushin.core.member.MemoryMemberRepository;
@@ -13,21 +14,27 @@ import yushin.core.order.OrderServiceImpl;
 
 // 객체의 생성과 연결을 담당한다.
 // factory method를 이용해 등록하는 방법이다.
-@Configuration
+@Configuration  // 싱글톤 컨테이너를 생성해주는 애노테이션
 public class AppConfig {
+
+    // @Bean memberService -> new MemoryMemberRepository()
+    // @Bean orderService -> new MemoryMemberRepository()
 
     @Bean
     public MemberService memberService() {
+        System.out.println("AppConfig.memberService has been called.");
         return new MemberServiceImpl(memberRepository());
     }
 
     @Bean
-    public static MemoryMemberRepository memberRepository() {
+    public MemberRepository memberRepository() {
+        System.out.println("AppConfig.memberRepository has been called.");
         return new MemoryMemberRepository();
     }
 
     @Bean
     public OrderService orderService() {
+        System.out.println("AppConfig.orderService has been called.");
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
