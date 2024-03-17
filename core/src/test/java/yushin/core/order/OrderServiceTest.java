@@ -4,10 +4,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import yushin.core.AppConfig;
-import yushin.core.member.Grade;
-import yushin.core.member.Member;
-import yushin.core.member.MemberService;
-import yushin.core.member.MemberServiceImpl;
+import yushin.core.discount.FixDiscountPolicy;
+import yushin.core.member.*;
 
 public class OrderServiceTest {
 

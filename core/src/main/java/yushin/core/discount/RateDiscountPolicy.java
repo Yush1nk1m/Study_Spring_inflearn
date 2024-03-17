@@ -1,8 +1,10 @@
 package yushin.core.discount;
 
+import org.springframework.stereotype.Component;
 import yushin.core.member.Grade;
 import yushin.core.member.Member;
 
+@Component
 public class RateDiscountPolicy implements DiscountPolicy {
 
     private int discountPercent = 10;

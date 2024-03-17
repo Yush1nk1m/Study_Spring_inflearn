@@ -1,2 +1,9 @@
-package yushin.core.scan.filter;public @interface MyExcludeComponent {
+package yushin.core.scan.filter;
+
+import java.lang.annotation.*;
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface MyExcludeComponent {
 }

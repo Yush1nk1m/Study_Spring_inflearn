@@ -1,11 +1,16 @@
 package yushin.core.member;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class MemberServiceImpl implements MemberService {
     // 생성자를 통해 MemberRepository를 주입한다(생성자 주입).
     // MemberServiceImpl은 이제 추상화에만 의존하게 되었다.
     private final MemberRepository memberRepository;
 
 
+    @Autowired
     public MemberServiceImpl(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }

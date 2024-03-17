@@ -1,2 +1,5 @@
-package yushin.core.scan.filter;public class BeanA {
+package yushin.core.scan.filter;
+
+@MyIncludeComponent
+public class BeanA {
 }
