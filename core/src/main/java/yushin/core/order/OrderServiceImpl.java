@@ -1,8 +1,10 @@
 package yushin.core.order;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import yushin.core.annotation.MainDiscountPolicy;
 import yushin.core.discount.DiscountPolicy;
 import yushin.core.discount.FixDiscountPolicy;
 import yushin.core.discount.RateDiscountPolicy;
@@ -16,16 +18,8 @@ public class OrderServiceImpl implements OrderService {
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
-    //public void setMemberRepository(MemberRepository memberRepository) {
-    //    this.memberRepository = memberRepository;
-    //}
-
-    //public void setDiscountPolicy(DiscountPolicy discountPolicy) {
-    //    this.discountPolicy = discountPolicy;
-    //}
-
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }

@@ -1,10 +1,14 @@
 package yushin.core.discount;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import yushin.core.annotation.MainDiscountPolicy;
 import yushin.core.member.Grade;
 import yushin.core.member.Member;
 
 @Component
+@MainDiscountPolicy
 public class RateDiscountPolicy implements DiscountPolicy {
 
     private int discountPercent = 10;
