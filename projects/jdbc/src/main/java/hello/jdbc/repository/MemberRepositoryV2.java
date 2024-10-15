@@ -1,6 +1,5 @@
 package hello.jdbc.repository;
 
-import hello.jdbc.connection.DBConnectionUtil;
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.support.JdbcUtils;
@@ -10,11 +9,11 @@ import java.sql.*;
 import java.util.NoSuchElementException;
 
 @Slf4j
-public class MemberRepositoryV1 {
+public class MemberRepositoryV2 {
 
     private final DataSource dataSource;
 
-    public MemberRepositoryV1(DataSource dataSource) {
+    public MemberRepositoryV2(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -65,28 +64,28 @@ public class MemberRepositoryV1 {
             log.error("db error", e);
             throw e;
         } finally {
-            close(conn, pstmt, rs);
+            // connection은 여기서 닫지 않는다
+            JdbcUtils.closeResultSet(rs);
+            JdbcUtils.closeStatement(pstmt);
         }
     }
 
-    public void update(String memberId, int money) throws SQLException {
+    public void update(Connection conn, String memberId, int money) throws SQLException {
         String sql = "update member set money=? where member_id=?";
 
-        Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
-            conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, money);
             pstmt.setString(2, memberId);
-            int resultSize = pstmt.executeUpdate();
-            log.info("resultSize={}", resultSize);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             log.error("db error", e);
             throw e;
         } finally {
-            close(conn, pstmt, null);
+            // connection은 여기서 닫지 않는다
+            JdbcUtils.closeStatement(pstmt);
         }
     }
 
