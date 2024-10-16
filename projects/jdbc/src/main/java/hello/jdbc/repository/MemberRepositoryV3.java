@@ -2,6 +2,7 @@ package hello.jdbc.repository;
 
 import hello.jdbc.domain.Member;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
 
 import javax.sql.DataSource;
@@ -9,11 +10,11 @@ import java.sql.*;
 import java.util.NoSuchElementException;
 
 @Slf4j
-public class MemberRepositoryV2 {
+public class MemberRepositoryV3 {
 
     private final DataSource dataSource;
 
-    public MemberRepositoryV2(DataSource dataSource) {
+    public MemberRepositoryV3(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -70,12 +71,14 @@ public class MemberRepositoryV2 {
         }
     }
 
-    public void update(Connection conn, String memberId, int money) throws SQLException {
+    public void update(String memberId, int money) throws SQLException {
         String sql = "update member set money=? where member_id=?";
 
+        Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
+            conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, money);
             pstmt.setString(2, memberId);
@@ -112,11 +115,13 @@ public class MemberRepositoryV2 {
     private void close(Connection conn, Statement stmt, ResultSet rs) {
         JdbcUtils.closeResultSet(rs);
         JdbcUtils.closeStatement(stmt);
-        JdbcUtils.closeConnection(conn);
+        // 트랜잭션 동기화를 사용하려면 DataSourceUtils를 사용해 커넥션을 반환해야 한다
+        DataSourceUtils.releaseConnection(conn, dataSource);
     }
 
     private Connection getConnection() throws SQLException {
-        Connection conn = dataSource.getConnection();
+        // 트랜잭션 동기화를 사용하려면 DataSourceUtils를 사용해 커넥션을 얻어야 한다
+        Connection conn = DataSourceUtils.getConnection(dataSource);
         log.info("get connection={}, class={}", conn, conn.getClass());
         return conn;
     }

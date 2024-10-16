@@ -13,17 +13,17 @@ import org.springframework.transaction.PlatformTransactionManager;
 import java.sql.SQLException;
 
 import static hello.jdbc.connection.ConnectionConst.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.assertj.core.api.Assertions.*;
-
-class MemberServiceV3_1Test {
+class MemberServiceV3_2Test {
 
     private static final String MEMBER_A = "memberA";
     private static final String MEMBER_B = "memberB";
     private static final String MEMBER_EX = "ex";
 
     private MemberRepositoryV3 memberRepository;
-    private MemberServiceV3_1 memberService;
+    private MemberServiceV3_2 memberService;
 
     @BeforeEach
     void beforeEach() {
@@ -31,7 +31,7 @@ class MemberServiceV3_1Test {
         PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
 
         memberRepository = new MemberRepositoryV3(dataSource);
-        memberService = new MemberServiceV3_1(transactionManager, memberRepository);
+        memberService = new MemberServiceV3_2(transactionManager, memberRepository);
     }
 
     @AfterEach
