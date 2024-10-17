@@ -1,9 +1,8 @@
 package hello.jdbc.service;
 
 import hello.jdbc.domain.Member;
-import hello.jdbc.repository.MemberRepositoryV3;
+import hello.jdbc.repository.*;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +16,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.sql.Date;
 import java.sql.SQLException;
 
 import static hello.jdbc.connection.ConnectionConst.*;
@@ -25,16 +25,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
 @SpringBootTest
-class MemberServiceV3_3Test {
+class MemberServiceV4Test {
 
     private static final String MEMBER_A = "memberA";
     private static final String MEMBER_B = "memberB";
     private static final String MEMBER_EX = "ex";
 
     @Autowired
-    private MemberRepositoryV3 memberRepository;
+    private MemberRepository memberRepository;
     @Autowired
-    private MemberServiceV3_3 memberService;
+    private MemberServiceV4 memberService;
 
     @AfterEach
     void afterEach() throws SQLException {
@@ -45,24 +45,23 @@ class MemberServiceV3_3Test {
 
     @TestConfiguration
     static class TestConfig {
-        @Bean
-        DataSource dataSource() {
-            return new DriverManagerDataSource(URL, USERNAME, PASSWORD);
+
+        private final DataSource dataSource;
+
+        public TestConfig(DataSource dataSource) {
+            this.dataSource = dataSource;
         }
 
         @Bean
-        PlatformTransactionManager transactionManager() {
-            return new DataSourceTransactionManager(dataSource());
+        MemberRepository memberRepository() {
+//            return new MemberRepositoryV4_1(dataSource);    // 단순 예외 변환
+//            return new MemberRepositoryV4_2(dataSource);    // 스프링 예외 변환
+            return new MemberRepositoryV5(dataSource);  // JdbcTemplate
         }
 
         @Bean
-        MemberRepositoryV3 memberRepositoryV3() {
-            return new MemberRepositoryV3(dataSource());
-        }
-
-        @Bean
-        MemberServiceV3_3 memberServiceV3_3() {
-            return new MemberServiceV3_3(memberRepositoryV3());
+        MemberServiceV4 memberServiceV4() {
+            return new MemberServiceV4(memberRepository());
         }
     }
 
