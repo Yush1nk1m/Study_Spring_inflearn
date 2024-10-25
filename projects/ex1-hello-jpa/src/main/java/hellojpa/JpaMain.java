@@ -14,37 +14,24 @@ public class JpaMain {
 
         tx.begin();
         try {
-            // C
+            // 비영속 상태
             Member member = new Member();
-            member.setId(1L);
-            member.setName("Yushin");
+            member.setId(100L);
+            member.setName("HelloJPA");
+
+            // 영속 상태, 1차 캐시에 저장딤
+            System.out.println("before");
             em.persist(member);
+            System.out.println("after");    // 이 라인이 실행되기 전 DB에 쿼리가 날아가지 않음
 
-            Member member2 = new Member();
-            member2.setId(2L);
-            member2.setName("Yeonwoo");
-            em.persist(member2);
+            // 1차 캐시에서 조회
+            Member findMember = em.find(Member.class, 100L);
+            Member findMember2 = em.find(Member.class, 100L);   // 1차 캐시에서 조회된 데이터는 == 비교가 가능하다
+            System.out.println("(findMember == findMember2) = " + (findMember == findMember2));
 
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(5)  // skip 5: Pagination
-                    .setMaxResults(8)   // take 8: Pagination
-                    .getResultList();
-
-            for (Member m : result) {
-                System.out.println("id = " + m.getId() + ", name = " + m.getName());
-            }
-
-            // R
-            Member findMember = em.find(Member.class, 1L);
+            // DB에 SELECT 쿼리가 날아가지 않음, 1차 캐시에서 조회된 것
             System.out.println("findMember.id = " + findMember.getId());
             System.out.println("findMember.name = " + findMember.getName());
-
-            // U
-//            findMember.setId(2L);
-//            findMember.setName("Yeonwoo");
-
-//            em.remove(member);    // D
-
 
             tx.commit();
         } catch (Exception e) {
@@ -52,6 +39,7 @@ public class JpaMain {
         } finally {
             em.close();
         }
+
 
         emf.close();
     }
