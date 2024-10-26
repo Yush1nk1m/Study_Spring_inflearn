@@ -14,12 +14,14 @@ public class JpaMain {
 
         tx.begin();
         try {
-            // 비영속
-            Member member = new Member(200L, "member200");
-            // 영속
-            em.persist(member);
-            // 플러시
-            em.flush();
+            Member member = em.find(Member.class, 200L);
+            member.setName("AAAAA");
+
+            // 준영속
+//            em.detach(member);
+            em.clear();
+
+            Member member2 = em.find(Member.class, 200L);
 
             System.out.println("=====");
 
