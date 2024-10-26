@@ -15,15 +15,13 @@ public class JpaMain {
         tx.begin();
         try {
             // 비영속
-//            Member member1 = new Member(1L, "A");
-//            Member member2 = new Member(2L, "B");
-
+            Member member = new Member(200L, "member200");
             // 영속
-//            em.persist(member1);
-//            em.persist(member2);
+            em.persist(member);
+            // 플러시
+            em.flush();
 
-            Member member = em.find(Member.class, 1L);
-            member.setName("yushin");
+            System.out.println("=====");
 
             tx.commit();
         } catch (Exception e) {
