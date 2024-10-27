@@ -15,8 +15,8 @@ public class Team {
 
     private String name;
 
-    // 연관 관계의 주인은 외래 키가 있는 엔티티이다
-    @OneToMany(mappedBy = "team")
+    @OneToMany
+    @JoinColumn(name = "TEAM_ID")
     private List<Member> members = new ArrayList<>();
 
     public Team() {
