@@ -14,23 +14,19 @@ public class JpaMain {
 
         tx.begin();
         try {
-
             Team team = new Team();
             team.setName("YushinTeam");
             em.persist(team);
 
             Member member1 = new Member();
             member1.setUsername("member1");
-            member1.setTeam(team);
+            member1.changeTeam(team);
             em.persist(member1);
 
-            Member member2 = new Member();
-            member2.setUsername("Yeonwoo");
-            member2.setTeam(team);
-            em.persist(member2);
+//            team.getMembers().add(member1);
 
-            em.flush();
-            em.clear();
+//            em.flush();
+//            em.clear();
 
             Team findTeam = em.find(Team.class, team.getId());
             List<Member> members = findTeam.getMembers();
