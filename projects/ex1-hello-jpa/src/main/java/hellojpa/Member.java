@@ -15,7 +15,7 @@ import java.util.List;
 //        initialValue = 1,
 //        allocationSize = 50
 //)
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
 //    @GeneratedValue(

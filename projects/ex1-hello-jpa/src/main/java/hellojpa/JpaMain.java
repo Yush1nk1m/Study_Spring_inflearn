@@ -16,15 +16,10 @@ public class JpaMain {
         try {
 
             Member member = new Member();
-            member.setUsername("Yushin");
+            member.setCreatedBy("Yushin");
+            member.setLastModifiedBy("Yeonwoo");
 
             em.persist(member);
-
-            Team team = new Team();
-            team.setName("Team 1");
-            team.getMembers().add(member);
-
-            em.persist(team);
 
             tx.commit();
         } catch (Exception e) {
