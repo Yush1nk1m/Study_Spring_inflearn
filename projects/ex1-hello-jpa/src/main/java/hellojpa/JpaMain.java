@@ -15,25 +15,29 @@ public class JpaMain {
         tx.begin();
         try {
 
-            Member member1 = new Member();
-            member1.setUsername("yushin");
-            Member member2 = new Member();
-            member2.setUsername("yeonwoo");
+            Team team = new Team();
+            team.setName("team");
+            em.persist(team);
 
-            em.persist(member1);
-            em.persist(member2);
+            Member member = new Member();
+            member.setUsername("yushin");
+            member.setTeam(team);
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            Member refMember = em.getReference(Member.class, member1.getId());
-            System.out.println("refMember = " + refMember.getClass());
+            Member findMember = em.find(Member.class, member.getId());
 
-            System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
+            System.out.println("=====");
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam);
+            System.out.println("=====");
 
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }
