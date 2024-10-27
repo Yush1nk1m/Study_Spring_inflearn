@@ -1,5 +1,6 @@
 package hello.jpashop;
 
+import hello.jpashop.domain.Book;
 import hello.jpashop.domain.Member;
 import hello.jpashop.domain.Order;
 import hello.jpashop.domain.OrderItem;
@@ -25,13 +26,11 @@ class JpashopApplicationTests {
 	@Transactional
 	@Commit
 	void run() {
-		Order order = new Order();
-		em.persist(order);
+		Book book = new Book();
+		book.setName("JPA");
+		book.setAuthor("Yushin");
 
-		OrderItem orderItem = new OrderItem();
-		orderItem.setOrder(order);
-
-		em.persist(orderItem);
+		em.persist(book);
 	}
 
 }
