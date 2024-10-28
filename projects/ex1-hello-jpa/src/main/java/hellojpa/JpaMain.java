@@ -3,6 +3,7 @@ package hellojpa;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
 
@@ -15,15 +16,21 @@ public class JpaMain {
         tx.begin();
         try {
 
-            Address address = new Address("Gunpo", "Surisan", "244");
-
             Member member = new Member();
             member.setUsername("Yushin");
-            member.setAddress(address);
+            member.setAddress(new Address("city", "street", "244"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("마라탕");
+            member.getFavoriteFoods().add("맥주");
+
+            member.getAddressHistory().add(new AddressEntity("광주", "우산동", "?"));
+            member.getAddressHistory().add(new AddressEntity("서울", "어딘가", "?"));
+
             em.persist(member);
 
-            Address newAddress = new Address("new City", address.getStreet(), address.getZipcode());
-            member.setAddress(newAddress);
+            em.flush();
+            em.clear();
 
             tx.commit();
         } catch (Exception e) {
