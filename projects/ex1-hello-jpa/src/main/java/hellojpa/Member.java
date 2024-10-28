@@ -15,7 +15,7 @@ import java.util.List;
 //        initialValue = 1,
 //        allocationSize = 50
 //)
-public class Member extends BaseEntity {
+public class Member {
 
     @Id
 //    @GeneratedValue(
@@ -28,27 +28,13 @@ public class Member extends BaseEntity {
     @Column(name = "USERNAME")
     private String username;
 
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
+    // 기간 Period
+    @Embedded
+    private Period period;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
-
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
-
-    @OneToMany(mappedBy = "member")
-    private List<MemberProduct> memberProducts = new ArrayList<>();
-
-    public Member() {
-    }
-
-    public Member(Long id, String name) {
-        this.id = id;
-        this.username = name;
-    }
+    // 주소 address
+    @Embedded
+    private Address address;
 
     public Long getId() {
         return id;
@@ -56,14 +42,6 @@ public class Member extends BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
     }
 
     public String getUsername() {
@@ -74,8 +52,19 @@ public class Member extends BaseEntity {
         this.username = username;
     }
 
-    public void changeTeam(Team team) {
-        this.team = team;
-        team.getMembers().add(this);
+    public Period getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Period period) {
+        this.period = period;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

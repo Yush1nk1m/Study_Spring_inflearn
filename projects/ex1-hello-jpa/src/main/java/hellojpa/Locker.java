@@ -13,9 +13,6 @@ public class Locker {
 
     private String name;
 
-    @OneToOne(mappedBy = "locker")
-    private Member member;
-
     public Locker() {
     }
 
@@ -35,11 +32,4 @@ public class Locker {
         this.name = name;
     }
 
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
 }
